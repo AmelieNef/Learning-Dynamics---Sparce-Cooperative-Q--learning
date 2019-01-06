@@ -1,9 +1,6 @@
-import os
-import sys, getopt
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-import matplotlib.mlab as mlab
 import warnings
 
 warnings.filterwarnings('ignore')
