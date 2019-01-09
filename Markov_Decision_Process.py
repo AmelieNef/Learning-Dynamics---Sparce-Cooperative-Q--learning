@@ -102,7 +102,7 @@ def mapping(state, action):
     return ( statefinal , reward , captured )
 
     #best action and Q value derived from Q in a given state
-def bestaction(state):
+def bestaction(Q, state):
     """
     Function to found the best action
     :param dic:
@@ -166,7 +166,7 @@ def q_learning(rseed, startingstates):
                 a = ( int ( np.random.choice(range(0,5),size=1,replace=False,p=[0.2,0.2,0.2,0.2,0.2]) ) , \
                 int ( np.random.choice(range(0,5),size=1,replace=False,p=[0.2,0.2,0.2,0.2,0.2]) ) )    
             else:
-                a = bestaction(state)[0]
+                a = bestaction(Q, state)[0]
                 
             #observe result from action a
             (state2,reward,captured) = mapping(state,a)
@@ -174,7 +174,7 @@ def q_learning(rseed, startingstates):
             #update Q
             Q[state[0]][state[1]][state[2]][state[3]][a[0]][a[1]] = \
             (1-alpha)*Q[state[0]][state[1]][state[2]][state[3]][a[0]][a[1]] + \
-            alpha*reward + alpha*gamma*bestaction(state2)[1]
+            alpha*reward + alpha*gamma*bestaction(Q, state2)[1]
 
             state = state2
 
