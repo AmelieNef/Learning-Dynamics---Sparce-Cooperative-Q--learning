@@ -22,10 +22,22 @@ possibleactions = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]
 
 
 def manhattandistance(a, b):
+    """
+    function to calculate the manhattandistance
+    :param a: x
+    :param b: y
+    :return: value of manhattan
+    """
     return min(a, 10 - a) + min(b, 10 - b)
 
 
 def mapping(state, action):
+    """
+    Function to move the predator and prey , plus calculate the reward
+    :param state:
+    :param action:
+    :return: new state,rewards, and the informaiton about the capture
+    """
     captured = False
     statefinal = [0, 0, 0, 0]
     reward = -1
