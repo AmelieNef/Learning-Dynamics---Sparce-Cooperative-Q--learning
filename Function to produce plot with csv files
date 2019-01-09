@@ -1,0 +1,113 @@
+import csv
+import matplotlib.pyplot as plt
+import matplotlib.mlab as mlab
+import numpy as np
+import seaborn as sns
+
+with open('results/mdp.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    avg_steps_mdp = np.zeros((250000))
+    i = 0
+    a = 0
+    for row in csv_reader:
+        if a>499:
+            avg_steps_mdp[i] = row[0]
+            i += 1
+        a+=1
+        if a == 1000:
+            a = 0
+
+with open('results/il.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    avg_steps_il = np.zeros((250000))
+    i = 0
+    a = 0
+    for row in csv_reader:
+        if a>499:
+            avg_steps_il[i] = row[0]
+            i +=1
+        a+=1
+        if a == 1000:
+            a = 0
+
+
+with open('results/sparse.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    avg_steps_sparse = np.zeros((250000))
+    i = 0
+    a = 0
+    for row in csv_reader:
+        if a>499:
+            avg_steps_sparse[i] = row[0]
+            i+=1
+        a+=1
+        if a == 1000:
+            a = 0
+
+# charts
+episodes = 500000
+style = ['b-', 'g-', 'r-', 'c-', 'm-', 'y-',
+            'k-', 'b--', 'g--', 'r--', 'c--', ]
+# plt.plot(range(0, episodes), avg_steps, style[1])
+# M1 = np.amin(avg_steps)
+# M2 = np.amax(avg_steps)
+# plt.xlabel('Time')
+# plt.ylabel('Steps')
+# plt.title('IL - Number of steps before capture per episode over time')
+# plt.axis([0, episodes, M1, M2])
+# plt.show()
+sns.set_context("paper")
+sns.set_style("whitegrid")
+plt.ylim(0,50)
+plt.xlim(0, None)
+plt.title('Average for each Algorithm', fontsize=20)
+
+
+fig = sns.boxplot(data=[avg_steps_il, avg_steps_mdp, avg_steps_sparse])
+
+# Set the Title of the graph from here
+#fig.axes.set_title('Degree distribution ' + mean + ', ' + std, size=12)
+# # Set the xlabel of the graph from here
+fig.set_xlabel("Algorithm", fontsize= 20)
+# Set the ylabel of the graph from here
+fig.set_ylabel("Steps per episode", fontsize=20)
+# Set the ticklabel size and color of the graph from here
+fig.tick_params(labelsize=20, labelcolor="black")
+# Set legends
+fig.legend(['1 : IL','2 : MDP','3 : Sparse'], shadow=True, loc='upper right',fontsize=20)
+
+
+plt.show()
+plot_avg_steps_sparse = []
+for i in range(0,len(avg_steps_sparse),500):
+    if i !=0:
+        plot_avg_steps_sparse.append(sum(avg_steps_sparse[i-500:i])/500)
+    else:
+        plot_avg_steps_sparse.append(avg_steps_sparse[0])
+
+plot_avg_steps_il = []
+for i in range(0,len(avg_steps_il),500):
+    if i !=0:
+        plot_avg_steps_il.append(sum(avg_steps_il[i-500:i])/500)
+    else:
+        plot_avg_steps_il.append(avg_steps_il[0])
+
+plot_avg_steps_mdp = []
+for i in range(0,len(avg_steps_mdp),500):
+    if i !=0:
+        plot_avg_steps_mdp.append(sum(avg_steps_mdp[i-500:i])/500)
+    else:
+        plot_avg_steps_mdp.append(avg_steps_mdp[0])
+
+sns.scatterplot(range(0,episodes,1000),plot_avg_steps_sparse,**{"color": "green"}, label= 'Sparse')
+sns.scatterplot(range(0,episodes,1000),plot_avg_steps_mdp,**{"color": "red"}, label= 'MDP')
+sns.scatterplot(range(0,episodes,1000),plot_avg_steps_il,**{"color": "blue"}, label='IL')
+
+fig.legend(shadow=True)
+plt.ylim(0,75)
+plt.xlim(0,500000)
+plt.title('Plot of each algorithm for 500.000 episode')
+plt.xlabel('Number of episode')
+plt.ylabel('Number of step to finish')
+
+plt.show()
