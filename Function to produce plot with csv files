@@ -42,7 +42,7 @@ plt.xlim(0, None)
 plt.title('Average for each Algorithm', fontsize=20)
 
 
-fig = sns.boxplot(data=[avg_steps_il, avg_steps_mdp, avg_steps_sparse])
+fig = sns.boxplot(data=[avg_steps_mdp, avg_steps_sparse, avg_steps_il])
 
 # Set the Title of the graph from here
 #fig.axes.set_title('Degree distribution ' + mean + ', ' + std, size=12)
@@ -53,7 +53,7 @@ fig.set_ylabel("Steps per episode", fontsize=20)
 # Set the ticklabel size and color of the graph from here
 fig.tick_params(labelsize=20, labelcolor="black")
 # Set legends
-fig.legend(['1 : IL','2 : MDP','3 : Sparse'], shadow=True, loc='upper right',fontsize=20)
+fig.legend(['0 : MDP','1 : Sparse','2 : IL'], shadow=True, loc='upper right',fontsize=20)
 
 
 plt.show()
